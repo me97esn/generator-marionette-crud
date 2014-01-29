@@ -31,6 +31,17 @@ var MarionetteCrudGenerator = module.exports = function MarionetteCrudGenerator(
       }
     }
   });
+  // compositeview peopleview --itemview personview --create-all
+  this.hookFor('marionette', {
+    as: 'compositeview',
+    args: [self.name + 'sView', self.name + 'View'],
+    options: {
+      options: {
+        'create-all':true,
+        model: self.name
+      }
+    }
+  });
 };
 
 // MarionetteCrudGenerator.prototype.collection = function model() {
