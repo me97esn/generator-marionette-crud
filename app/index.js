@@ -10,11 +10,9 @@ var MarionetteCrudGenerator = module.exports = function MarionetteCrudGenerator(
     this.installDependencies({
       skipInstall: options['skip-install']
     });
-    console.log('modelname:' + this.modelName);
-
   });
 
-  this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
+  // this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 
   this.hookFor('marionette', {
     as: 'model',
@@ -68,11 +66,7 @@ MarionetteCrudGenerator.prototype.askFor = function askFor() {
   // have Yeoman greet the user.
   console.log(this.yeoman);
 
-  var prompts = [{
-    name: 'modelName',
-    message: 'Name of the model?',
-    default: 'Todo'
-  }];
+  var prompts = [];
 
   this.prompt(prompts, function(props) {
     this.modelName = props.modelName;
@@ -82,14 +76,7 @@ MarionetteCrudGenerator.prototype.askFor = function askFor() {
 };
 
 MarionetteCrudGenerator.prototype.app = function app() {
-  this.mkdir('app');
-  this.mkdir('app/templates');
-
-  this.copy('_package.json', 'package.json');
-  this.copy('_bower.json', 'bower.json');
 };
 
 MarionetteCrudGenerator.prototype.projectfiles = function projectfiles() {
-  this.copy('editorconfig', '.editorconfig');
-  this.copy('jshintrc', '.jshintrc');
 };
