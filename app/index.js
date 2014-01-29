@@ -21,24 +21,12 @@ var MarionetteCrudGenerator = module.exports = function MarionetteCrudGenerator(
 
   this.hookFor('marionette', {
     as: 'collection',
-    args: [self.name + 's', self.name],
-    options: {
-      options: {
-        'create-all':true,
-        model: self.name
-      }
-    }
+    args: [self.name + 's', self.name]
   });
-  // compositeview peopleview --itemview personview --create-all
+
   this.hookFor('marionette', {
     as: 'compositeview',
-    args: [self.name + 'sView', self.name + 'View'],
-    options: {
-      options: {
-        'create-all':true,
-        model: self.name
-      }
-    }
+    args: [self.name + 'sView', self.name + 'View']
   });
 };
 
@@ -73,6 +61,20 @@ MarionetteCrudGenerator.prototype.askFor = function askFor() {
 
     cb();
   }.bind(this));
+};
+
+MarionetteCrudGenerator.prototype.compositeViewTemplate = function con(){
+  var path   = './app/templates/composite/'+this.name+'sView_tmpl.hbs',
+      file   = this.readFileAsString(path);
+
+    this.write(path, '<div id="'+this.name+'View" />');
+};
+
+MarionetteCrudGenerator.prototype.itemViewTemplate = function con(){
+  var path   = './app/templates/item/'+this.name+'View_tmpl.hbs',
+      file   = this.readFileAsString(path);
+
+    this.write(path, '<p>{{this}}</p>');
 };
 
 MarionetteCrudGenerator.prototype.app = function app() {
