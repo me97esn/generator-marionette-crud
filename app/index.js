@@ -23,16 +23,6 @@ var MarionetteCrudGenerator = module.exports = function MarionetteCrudGenerator(
     as: 'collection',
     args: [self.name + 's', self.name]
   });
-
-  this.hookFor('marionette', {
-    as: 'compositeview',
-    args: [self.name + 'sView', self.name + 'View'],
-  });
-
-  this.hookFor('marionette', {
-    as: 'itemview',
-    args: [self.name + 'View'],
-  });
 };
 
 util.inherits(MarionetteCrudGenerator, yeoman.generators.NamedBase);
@@ -52,30 +42,13 @@ MarionetteCrudGenerator.prototype.askFor = function askFor() {
   }.bind(this));
 };
 
-MarionetteCrudGenerator.prototype.compositeViewTemplate = function con() {
-  var path = './app/tmpl/composite/' + this.name + 'sView_tmpl.hbs';
-  this.write(path, '<div id="' + this.name + 'View" />');
+MarionetteCrudGenerator.prototype.compositeView = function con() {
+
+  this.template('_CompositeView.js', './app/scripts/views/composite/'+this.name + 'sView.js');
+  this.template('_ItemView.js', './app/scripts/views/item/'+this.name + 'View.js');
+  this.template('_CompositeView.hbs', './app/templates/composite/'+this.name + 'sView_tmpl.hbs');
+  this.template('_ItemView.hbs', './app/templates/item/'+this.name + 'View_tmpl.hbs');
 };
-
-MarionetteCrudGenerator.prototype.itemViewTemplate = function con() {
-  var path = './app/templates/item/' + this.name + 'View_tmpl.hbs';
-  this.write(path, '<p>{{this.name}}</p>');
-};
-
-MarionetteCrudGenerator.prototype.updateComposite = function app() {
-  // TODO why don't I find the hook? Aren't they equal
-  var hook = 'itemViewContainer: "",',
-    path = './app/scripts/views/composite/' + this.name + 'sView.js',
-    file = this.readFileAsString(path),
-    insert = 'itemViewContainer: "#' + this.name + 'View",';
-    console.log(file);
-    console.log(file.indexOf(insert));
-  if (file.indexOf(insert) === -1) {
-    this.write(path, file.replace(hook, insert + '\n' + hook));
-  }
-};
-
-
 
 MarionetteCrudGenerator.prototype.app = function app() {};
 
