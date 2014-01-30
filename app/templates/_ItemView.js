@@ -19,8 +19,12 @@ function( Backbone, <%= name%>viewTmpl  ) {
     	ui: {},
 
 		/* Ui events hash */
-		events: {},
-
+		events: {
+			'click #delete<%=name%>':'delete'
+		},
+		delete: function(){
+			this.model.destroy();
+		},
 		/* on render callback */
 		onRender: function() {}
 	});
