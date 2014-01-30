@@ -26,25 +26,14 @@ var MarionetteCrudGenerator = module.exports = function MarionetteCrudGenerator(
 
   this.hookFor('marionette', {
     as: 'compositeview',
-    args: [self.name + 'sView', self.name + 'View']
+    args: [self.name + 'sView', self.name + 'View'],
+  });
+
+  this.hookFor('marionette', {
+    as: 'itemview',
+    args: [self.name + 'View'],
   });
 };
-
-// MarionetteCrudGenerator.prototype.collection = function model() {
-//   this.invoke("generator_marionette", {
-//     options: {
-//       modelName: this.modelName
-//     }
-//   })
-// };
-
-// MarionetteCrudGenerator.prototype.model = function model() {
-//   this.invoke("generator_marionette", {
-//     options: {
-//       modelName: this.modelName
-//     }
-//   })
-// };
 
 util.inherits(MarionetteCrudGenerator, yeoman.generators.NamedBase);
 
@@ -63,22 +52,31 @@ MarionetteCrudGenerator.prototype.askFor = function askFor() {
   }.bind(this));
 };
 
-MarionetteCrudGenerator.prototype.compositeViewTemplate = function con(){
-  var path   = './app/templates/composite/'+this.name+'sView_tmpl.hbs',
-      file   = this.readFileAsString(path);
-
-    this.write(path, '<div id="'+this.name+'View" />');
+MarionetteCrudGenerator.prototype.compositeViewTemplate = function con() {
+  var path = './app/tmpl/composite/' + this.name + 'sView_tmpl.hbs';
+  this.write(path, '<div id="' + this.name + 'View" />');
 };
 
-MarionetteCrudGenerator.prototype.itemViewTemplate = function con(){
-  var path   = './app/templates/item/'+this.name+'View_tmpl.hbs',
-      file   = this.readFileAsString(path);
-
-    this.write(path, '<p>{{this}}</p>');
+MarionetteCrudGenerator.prototype.itemViewTemplate = function con() {
+  var path = './app/templates/item/' + this.name + 'View_tmpl.hbs';
+  this.write(path, '<p>{{this.name}}</p>');
 };
 
-MarionetteCrudGenerator.prototype.app = function app() {
+MarionetteCrudGenerator.prototype.updateComposite = function app() {
+  // TODO why don't I find the hook? Aren't they equal
+  var hook = 'itemViewContainer: "",',
+    path = './app/scripts/views/composite/' + this.name + 'sView.js',
+    file = this.readFileAsString(path),
+    insert = 'itemViewContainer: "#' + this.name + 'View",';
+    console.log(file);
+    console.log(file.indexOf(insert));
+  if (file.indexOf(insert) === -1) {
+    this.write(path, file.replace(hook, insert + '\n' + hook));
+  }
 };
 
-MarionetteCrudGenerator.prototype.projectfiles = function projectfiles() {
-};
+
+
+MarionetteCrudGenerator.prototype.app = function app() {};
+
+MarionetteCrudGenerator.prototype.projectfiles = function projectfiles() {};
