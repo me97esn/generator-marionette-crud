@@ -1,15 +1,19 @@
 define([
 	'backbone',
 	'views/item/<%=name%>View',
-	'hbs!tmpl/composite/<%=name %>sView_tmpl'
+	'models/<%=name%>',
+	'hbs!tmpl/composite/<%=name %>sView_tmpl',
+	'Backbone.ModelBinder'
 ],
-function( Backbone, <%=name %>view, <%=name %>viewTmpl  ) {
+function( Backbone, <%=name %>view, <%=name %>Model, <%=name %>viewTmpl  ) {
     'use strict';
 
 	/* Return a CompositeView class definition */
 	return Backbone.Marionette.CompositeView.extend({
 
 		initialize: function() {
+			this.model = new <%=name %>Model();
+			this._modelBinder = this._modelBinder || new Backbone.ModelBinder();
 			console.log("initialize a <%=name %>view CompositeView");
 		},
 		
@@ -25,10 +29,17 @@ function( Backbone, <%=name %>view, <%=name %>viewTmpl  ) {
     	itemViewContainer: "#<%=name %>View",
 
 		/* Ui events hash */
-		events: {},
-
+		events: {
+			'click #createNew<%=name %>':'createNew'
+		},
+		createNew: function(){
+			console.log('create:' + JSON.stringify(this.model));
+			this.model.save();
+		},
 		/* on render callback */
-		onRender: function() {}
+		onRender: function() {
+			this._modelBinder.bind(this.model, this.el);
+		}
 	});
 
 });

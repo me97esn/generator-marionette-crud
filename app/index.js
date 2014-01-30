@@ -23,6 +23,8 @@ var MarionetteCrudGenerator = module.exports = function MarionetteCrudGenerator(
     as: 'collection',
     args: [self.name + 's', self.name]
   });
+
+  this.copy('_bower.json', 'bower.json');
 };
 
 util.inherits(MarionetteCrudGenerator, yeoman.generators.NamedBase);
@@ -42,12 +44,22 @@ MarionetteCrudGenerator.prototype.askFor = function askFor() {
   }.bind(this));
 };
 
-MarionetteCrudGenerator.prototype.compositeView = function con() {
+MarionetteCrudGenerator.prototype.views = function views() {
+  this.template('_CompositeView.js', './app/scripts/views/composite/' + this.name + 'sView.js');
+  this.template('_ItemView.js', './app/scripts/views/item/' + this.name + 'View.js');
+  this.template('_CompositeView.hbs', './app/templates/composite/' + this.name + 'sView_tmpl.hbs');
+  this.template('_ItemView.hbs', './app/templates/item/' + this.name + 'View_tmpl.hbs');
+};
 
-  this.template('_CompositeView.js', './app/scripts/views/composite/'+this.name + 'sView.js');
-  this.template('_ItemView.js', './app/scripts/views/item/'+this.name + 'View.js');
-  this.template('_CompositeView.hbs', './app/templates/composite/'+this.name + 'sView_tmpl.hbs');
-  this.template('_ItemView.hbs', './app/templates/item/'+this.name + 'View_tmpl.hbs');
+MarionetteCrudGenerator.prototype.compositeView = function app() {
+  var hook = '/* alias all marionette libs */',
+    path = 'app/scripts/init.js',
+    file = this.readFileAsString(path),
+    insert = "\n '        Backbone.ModelBinder': '../bower_components/Backbone.ModelBinder/Backbone.ModelBinder',";
+
+  if (file.indexOf(insert) === -1) {
+    this.write(path, file.replace(hook, insert + '\n' + hook));
+  }
 };
 
 MarionetteCrudGenerator.prototype.app = function app() {};
