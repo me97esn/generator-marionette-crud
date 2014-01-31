@@ -12,12 +12,8 @@ var MarionetteCrudGenerator = module.exports = function MarionetteCrudGenerator(
     });
   });
 
-  // this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 
-  this.hookFor('marionette', {
-    as: 'model',
-    args: [self.name]
-  });
+  this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 
   this.hookFor('marionette', {
     as: 'collection',
@@ -25,6 +21,7 @@ var MarionetteCrudGenerator = module.exports = function MarionetteCrudGenerator(
   });
 
   this.copy('_bower.json', 'bower.json');
+  this.copy('_routes.js', 'server/routes/index.js');
 };
 
 util.inherits(MarionetteCrudGenerator, yeoman.generators.NamedBase);
@@ -49,6 +46,8 @@ MarionetteCrudGenerator.prototype.views = function views() {
   this.template('_ItemView.js', './app/scripts/views/item/' + this.name + 'View.js');
   this.template('_CompositeView.hbs', './app/templates/composite/' + this.name + 'sView_tmpl.hbs');
   this.template('_ItemView.hbs', './app/templates/item/' + this.name + 'View_tmpl.hbs');
+  this.template('_Model.js', './app/scripts/models/' + this.name + '.js');
+  this.template('_tiny-server.js', './server/mongodbCrud.js');
 };
 
 MarionetteCrudGenerator.prototype.compositeView = function app() {
@@ -59,6 +58,18 @@ MarionetteCrudGenerator.prototype.compositeView = function app() {
 
   if (file.indexOf(insert) === -1) {
     this.write(path, file.replace(hook, insert + '\n' + hook));
+  }
+};
+
+MarionetteCrudGenerator.prototype.packages = function app() {
+  var hook = '  "devDependencies": {',
+    path = 'package.json',
+    file = this.readFileAsString(path),
+    insert = '        "mongoskin": "~0.6.1",\
+     "jade": "~0.34.0",';
+
+  if (file.indexOf(insert) === -1) {
+    this.write(path, file.replace(hook, hook  + '\n' + insert));
   }
 };
 

@@ -22,7 +22,9 @@
   },
   "dependencies": {
     "yeoman-generator": "~0.14.0",
-    "generator-marionette": "~0.1.5"
+    "generator-marionette": "~0.1.5",
+    "mongodb-rest": "~0.9.0",
+    "mongoskin": "~0.6.1"
   },
   "devDependencies": {
     "mocha": "~1.14.0"
