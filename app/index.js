@@ -52,7 +52,7 @@ MarionetteCrudGenerator.prototype.views = function views() {
 
 MarionetteCrudGenerator.prototype.compositeView = function app() {
   var hook = '/* alias all marionette libs */',
-    path = 'app/scripts/init.js',
+    path = 'scripts/init.js',
     file = this.readFileAsString(path),
     insert = "\n '        Backbone.ModelBinder': '../bower_components/Backbone.ModelBinder/Backbone.ModelBinder',";
 
