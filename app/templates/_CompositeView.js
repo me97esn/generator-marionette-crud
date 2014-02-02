@@ -34,12 +34,16 @@ function( Backbone, <%=name %>view, <%=name %>Model, <%=name %>viewTmpl  ) {
 		},
 		createNew: function(){
 			console.log('create:' + JSON.stringify(this.model));
-			this.model.save();
+			this.collection.create(this.newModel);
+			this.bind();
+		},
+		bind: function(){
+			this.newModel = new TodoModel();
+			this._modelBinder.bind(this.newModel, this.el);
 		},
 		/* on render callback */
 		onRender: function() {
-			this._modelBinder.bind(this.model, this.el);
+			this.bind();
 		}
 	});
-
 });

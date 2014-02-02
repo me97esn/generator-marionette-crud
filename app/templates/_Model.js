@@ -11,5 +11,6 @@ function( Backbone ) {
 		},
 		urlRoot: 'http://localhost:3001/collections/<%=name%>',
 		defaults: {},
+		idAttribute: '_id'
     });
 });
