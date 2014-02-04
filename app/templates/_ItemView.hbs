@@ -1,1 +1,3 @@
-<p>{{this.name}}<button id="delete<%=name%>">x</button></p>
+<p>{{#each this}}
+    {{@key}}:{{this}}
+{{/each}}<button id="delete<%=name%>">x</button></p>
